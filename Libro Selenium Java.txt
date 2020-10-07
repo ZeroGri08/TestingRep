@@ -1,0 +1,465 @@
+SELENIUM WEB DRIVER, APUNTES DEL LIBRO
+
+NOTAS PARTE 1
+
+
+1. bajar el jdk de java 
+2. Definir el java home
+Security -> System -> Advance system Setings
+
+3. definir variable de entorno y sino declarar la ruta en el driver
+4. bajar el chromedriver de su pagina oficial
+ejecutar primeras pruebas (apertura y clausura de navegador)
+
+
+Para firefox hay que buscar el driver, e igual definir su ruta
+No permitira desde la terminal de vscode
+hay que abrir una terminal y ejecutar el dotnet run
+
+Controlando al navegador
+INavigate nav = driver.Navigate();
+IWindows win = driver.Manage().Window;
+
+Controles de una pagina
+
+IWebElement campo = driver.FindElement(By.Id(""));
+campo.accion
+
+SendKeys ("") -> para capturar texto
+
+submit()-> para boton 
+
+ByTagName("a");
+
+
+driver.Url = "https:pagina.com"
+var links = driver.FindElements(By.TagName("post-list"));
+
+foreach(var link in links)
+{
+	System.Console.WriteLune(link.Text
+}
+
+
+*******************************************************
+NOTAS PARTE 2
+
+localizando elementos con webdriver
+
+-----Metodos
+By.Id
+By.Name
+By.CssSelector("") -> para identificar el mento con el id #flrs. Se usa la sintaxis #flrs
+PAra identificar la ancla hija se usa el #flas > una sintaxis la cual regresara el elmennto link
+Para identificar el emento ancla con su atributo se usa el #flrs > a[a[hrfed="/intl/en/about.html"]] syntax
+By.tagName
+by.classsName(")
+By.linkText(""); -> Enlaces
+By.partialLinkText -> como el anterior pero parcial cuando no se tiene el enlace completo
+By.xpath()-> corto nombre para el xml path. 
+
+El emento raiz (root) es definido como //
+para identificar todos los elmentos div la sintaxis sera //div
+Para identificar los tags de link con los elemneots div, la sintaxis sera //div/a
+Para identificar todos los elmentos con un tag, se usa *. La sintaxis seria //div/*
+Para identificar todos los elmeneots div que son tres niveles abajo de la raiz, se puede usar //*/*/div
+Para identificar elementos especificos, se usa atributos con valores de los elementos, tales como //*/div/a[@id='attrValue'], que regresara u elmento anchor. Este elmento es un tercer nivel raiz con un elmento div, y tine un id de valor attrValue
+
+
+
+ACTIONS EN WEB ELEMENT
+
+getAttribute -> obtener el atributo del elmento
+un ejemplo seria obtener el atributo con el nombre "name" 
+WebElement searchbutton = driver.findElment(By.name("btnK");
+System.out.println("Name of the button is: " + searchButton.getAttribute("name");
+System.out.println("Id of the button is: " + searchButton.getAttribute("id");
+System.out.println("Class of the button is: " + searchButton.getAttribute("class");
+System.out.println("Label of the button is: " + searchButton.getAttribute("aria -label");
+
+
+----El metodo sendKeys
+Aplicable para un textbox o textArea
+
+IWebElement campo = driver.FindElement(FindElement(By.Id("usuario"));
+campo.sendKeys("usuario1");
+
+Para texto normal se coloca el texto plano pero para Backspace, enter, tab, shift se requiere una class enum llamada Keys
+
+campo.sendKeys(Keys.chord(Keys.SHIFT,"packt publishing"));
+
+---Metodo clear()
+Aplicable para un textbox o textArea
+Usado para limpiar un weblement usado con sendkeys. 
+
+campo.clear();
+
+--Metodo submit
+puede tomar en un formulario o un elmento para el click del elementos
+IWebElement boton = driver.findElment(By.Id("btn"));
+boton.submit();
+
+
+--El metodo getCssValue();
+Se puede uysar en todos los elementos web. Es usado para buscar las propiedades de los valores css de los elementos. 
+System.out.println(searchButton.getCssValue("fon-family"));
+
+
+-- El metodo getLocation()
+se puede usar en todos los elementos . Es usado para obtener una posición relatvia de un elmento cuando es cargado en una pagina web. Esta posición es calculada relativamente desde la esquitna izquierda de la paquina con (x,y) coordenadas asumiendo un (0,0). Este metodo sera usado si el script trata de validar el layout de la pagina web
+Syste.out.println(bton.getLocation());
+
+-- El metodo getSize()
+todos los componentes visibles del HTML
+regresa ancho y alto(width y height)
+
+System.out.println(btn.getSize());
+
+-- El metodo getText()
+Puede ser usado en todos los elmeentos para obtener el texto visible de un elemento para configurar si contiene un texto o regresa nada
+System.out.println(btn.getText());
+
+-- El metodo getTagName()
+En todos los elementos visibles yt puede regresar el tag del weblement. Por ejemplo de un bonton 
+<button id="gbqfba" class="gbqfba" name="btnK" aria-label="GoogleSearch">
+System.out.println(btn.getTagName());
+
+//Se imprime un button
+
+-- El metodo isDisplayed()
+verifica si un elemento se esta mostrando en la pagina. Se puede usar en todos los elementos web
+Sytem.out.println(btn.isDisplayed());
+
+-- Metodo isEnabled()
+Si un elemento esta habilitado, regresa un boleano true o false
+Sytem.out.println(btn.isEnabled());
+
+--Metodo isSelected()
+La acción isSelected verifica si un elmeneot es selecionado en el moemnto en la pagina web y puede ser ejecutado en un radiobutton, opciones en select y checkbox.
+Cuando se ejecuta en otros elmeentos, regresara un false
+Sytem.out.println(btn.isSelected());
+
+
+
+**********************************
+NOTAS PARTE 3
+
+
+Interfaciones avanzadas de web driver
+
+mantener un boton y apretar otro.
+
+
+Interacciones basadas en mouse
+Hay 8 acciones que se pueden realizar con la clase Actions. 
+
+--La accion moveByOffset
+usado para mvoer el mouse de su posicion actual a otro punto. Desarrolladores pueden especificar la distancia x y y destinado a mover. Cuando la pagina es cargada la posición sera (0,0) a menos que una funcion explicita sea declarada.
+
+cuando se coloque alguna distancia fuera del rango del cursor o documento la excpeción MoveTargetOutOfBoundsException se ejecuta
+
+Actions builder = new Actions (driver);
+builder.moveByOffset(three.getLocation().getX()+1, three.getLocation().getY()+1);
+builder.perform();
+
+--- La accion click en una localización actual
+el metodo click() es usado para simular el click izquierda del mouse en la posición actual de localización.
+Este metodo no toma en cuenta el elemento al que se le esta hacienod click. Solo hace clicks en un punto. 
+Actions builder = new Actions(driver);
+builder.moveByOffset(seven.getLocation().getX()+1, seven. getLocation().getY()+1).click();
+
+--El click en una accion WebElement
+Actions builder = new Actions(driver);
+//Click on One
+builder.click(one);
+builder.build().perform();
+// Click on Eleven
+builder.click(eleven);
+builder.build().perform();
+//Click on Five
+builder.click(five)
+builder.build().perform();
+
+-- La accion clickAndHold en una posición actual
+Como dice su nombre es un click izquierda pero sin soltarle. Es util cuando se ejecutan operaciones como drap-and-drop
+
+Actions builder = new Actions(driver);
+builder.moveByOffset(200,20)
+		.clickAndHold()
+		.moveByOffset(120,0)
+		.perform();
+		
+--- El mover y mantener un weblement
+Solo hay que definirlo en el clickAndHold
+
+IWebElement arbol = driver.FindElement(By.Id("btn"))
+Actions builder = new Actions(driver);
+builder.clickAndHold(arbol)
+		.moveByOffset(120,0)
+		.perform();
+		
+-- Liberar en una posición
+builder.clickAndHold(three)
+.moveByOffset(120, 0)
+.release()
+.perform();
+
+
+-- Liberar en otro weblement
+
+WebElement three = driver.findElement(By.name("three"));
+WebElement two = driver.findElement(By.name("two"));
+Actions builder = new Actions(driver);
+//Move tile3 to the position of tile2
+builder.clickAndHold(three)
+.release(two)
+.perform();
+
+-- La accion moveToElement
+mover el cursors a otro weblement de la pagina
+
+-- La accion dragAndDropBy action
+Se define el elemneto origen y el elemento destino
+
+WebElement src = driver.findElement(By.id("draggable"));
+WebElement trgt = driver.findElement(By.id("droppable"));
+Actions builder = new Actions(driver);
+builder.dragAndDrop(src, trgt).perform();
+
+-- La accion doble click
+WebElement dblClick= driver.findElement(By.name("dblClick"));
+Actions builder = new Actions(driver);
+builder.moveToElement(dblClick).doubleClick().perform();
+
+-- El double click en una accion WebElement
+WebElement dblClick = driver.findElement(By.name("dblClick"));
+Actions builder = new Actions(driver);
+builder.doubleClick(dblClick).perform();
+
+
+-- Context click en accion de webElement 
+Contextclick o tambien como click derecho
+Actions builder = new Actions(driver);
+builder.contextClick(contextMenu)
+.click(driver.findElement(By.name("Item 4")))
+.perform();
+
+
+****************************************************
+Aprendiendo iteraciones basadas en keyboard
+
+Basicamente hay 3: keyUp, keyDown y sendKeys. teniendo dos metodos sobrecargados
+
+-- Las acciones keyDown y keyUp
+
+El keyDown() es usado para simular la accion de persionar y mantener una tecla. 
+El keyUp() es para liberar la tecla apretada con el keyDown()
+
+-- El metodo sendKeys
+Como se menciono antes el usado para textareas o textbox en elementos web
+
+
+*************************************************
+
+
+NOTAS PARTE 4
+
+
+Explorando las capacidades del webdriver
+
+--Capabilities 
+es una interface dentro de la libraria webdriver que esta directamente en la clase DesiredCapabilities.
+La serie de passos envueltas en el navegador creando una sesión son las siguientes:
+
+1. Identficar todas las capacidades que se desean probar en el navegador
+2. Crear una instancia de la clase DesiredCapabilities colocando todas las capacidades 
+3. Crear una instancia WebDriver con todas las capacidades transifiriendose.
+
+capacidad -> para que se usa
+
+takesScreenShot -> tomar una screenshot de la pagina
+handlesAlert -> Indica que la sesion del navegador puede manejar modal dialogs.
+cssSelectorEnabled -> Indica que el la sesión del navegador puede usasr selectores CSS mientras busca por elementos
+javascriptEnabled -> Habilita / deshabilita ejecucion sobre soportado de javascripot en el contexto de la pagina webdriver
+accepSSLCerts -> Habilita / Deshabilita el navegador para aceptar todo lo del certificado SSL por default
+webStorageEnabled -> esta es una caracteristica HTML5, y es poslbe de habilitar o deshabilitar del navegador para interactuar con objetos almacenados.
+
+--Tomando screenshot
+Util cuando el caso de prueba falla, y se desea ver en que estado de la aplicación fallo.
+
+Esta habilitado para todos los navegadores por default. Porque es una capacidad read-only, un usuario no tiene mucho que decir. 
+
+Aquí el OutputType es otra itnerface de la libreria WebDriver. Se puede preguntan al webdriver para otogorgar el screenshot en tres diferentes formatos. 
+
+BASE64,BYTES(raw data) y FILE
+
+Si se elige FILE es un archivo .png que muere una vez que la JVM (en este caso de java) TERMINA.
+Por lo que hay que copiar ese archivo a un directorio antes de terminar la ejecución.
+
+Hay que elegir siguiente si:
+- Se captura toda la pagina
+- la ventana actual
+- una posición del frame
+- de todo lo mostrado en el navegador
+
+WebDriver driver = new FirefoxDriver();
+driver.get("http://www.packtpub.com/");
+File scrFile = ((TakesScreenShot)driver).getScreenshotAs(OutputType.FILE);
+System.out.println(scrFile.getAbsolutePath());
+
+--Localizando objetivos en ventanas y iFrames
+
+- Manejando alertas
+aparte de ventanas y frames talvez se tengan que manejar varios modals en la aplicación web. 
+Alert alert()
+
+--Esperando a elementos web cargados
+
+
+****** IMPLICIT WAIT TIME
+Es usado cuando se busca el configurar el tiempo de espera del webDriver como el total de la aplicacion bajo test. 
+Tener en cuenta que no es el mismo tiempo probar de manera local que de manera remota y los tiempos varian.
+
+
+un ejemplo de tiempo de espera implicito
+
+public class ImplicitWaitTime
+{
+public static void main (string args){
+	WebDriver driver = new FirefoxDriver();
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	driver.get("www.google.com");
+}
+}
+
+Aqui el codigo esperara 10 segudnos como se declara en el metodo. Despues de los 10 segundos que el máximo de tiempo el driver esperara por un webelemeno a cargar en el navegador. Si despues de eso no procede se arrojaa un NoSuchElementException.
+
+Se debe usar este elmeento para especificar un maximo de espera de tiempo, el cual es generalmente comun para la mayoria de los weblement de la aplciacion web. Varios factrores como el perromace y la red. 
+
+
+
+*******  EXPLICIT WAIT TIME
+La espera implicita es general para todos los elmentos de una pagina web. Pero, si se especifica de un ElementWeb en la aplciación donde se busca esperar por un tiempo mas largo, este no servira. Implementar un timepo larog retrasa totalmetne el conjunto de conjutnos de ejecución. Por lo que se debe hacer una excepción para un caso en particular. Como este WebElement. Para manejar tal escenario, webdriver tiene un timepo explicio para un elmento Web
+
+public class ExplicitWaitTime {
+public static void main(String args[]){
+WebDriver driver = new FirefoxDriver();
+driver.get("https://wwww.google.com");
+WebElement element = (new WebDriverWait(driver,20)).until(new ExpectedCondition<WebElement>(){
+@Override
+public WebElement apply(WebDriver d){
+return d.findElement(By.name("q"));
+}
+});
+}
+}
+
+
+**** MANEJANDO COOKIES
+
+driver.manage().getCookies().
+
+Con eso se regresara las cookies de la sesión actual. 
+Cada cookies esta relacionada con el nombre, valor, domain, path, expiración, status de los eguro o no.
+
+File f = new File ("brower.data");
+try{
+	f.delete();
+	f.createNewFile();
+	FileWriter fos = new FileWriter(f);
+	BufferedWriter bos = newe BufferedWriter(fos);
+	
+	for (Cookie ck : driver.manage().getCookies()){
+		bos.write((ck.getName() + ";" + ck.getValue() + ";" + ck.getDomain() + ";" + ck.getPath() + ";" + ck.getExpiry() +";"+ck.isSecure()));
+		bos.newLine();
+	}
+	
+	bos.flush();
+	bos.Close();
+	fos.Close();
+}
+catch(Exception ex){
+	ex.printStackTrace();
+}
+}
+}
+
+
+NOTAS PARTE 5
+
+
+DEALING WITH I/O
+
+FileHandler
+TemporaryFileSystem
+Zip
+
+***FILEHANDLER
+public class CopyFromSrcToDestDir {
+public static void main(String... args){
+try {
+FileHandler.copy(new File("C:\\Src\\"), new File("C:\\
+Dest\\"));
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+}
+
+**COPIANDO ARCHIVOS CON SUFIJOS
+public class CopySimilarFilesFromSrcToDestDir {
+public static void main(String... args){
+try {
+FileHandler.copy(new File("C:\\Src\\"), new
+File("C:\\Dest\\"), ".txt");
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+}
+**cCREAR Y ELMINAR DIRECTORIOS
+CREAR
+FileHandler.createDir(new File("C:\\SelDir"));
+ELIMINAR
+FileHandler.delete(new File("C:\\SelDir\\"));
+
+
+********ENTENDIDO ES METODO IsZipped()
+
+Se verifica si un archivo es zip o no. 
+
+System.out.println(FileHandler.isZipped("C:\\Dest.zip"));
+
+
+****ENTENDIENDO EL METODO makeExecutable()
+Realizar un archivo como ejecutable
+FileHandler.makeExecutable(new File("C:\\Src\\file1.txt"));
+
+****ENTENDIENDO EL METODO makeWritable()
+Permitir un archivo de escritura
+
+FileHandler.makeWritable(new File("C:\\Src\\file1.txt"));
+
+*****LEYENDO UN ARCHIVO
+
+Lectura de un archivo en una variable string. Todo el contenido de un archivo objetivo ahora disponible en una variable strig 
+
+String fileContent = FileHandler.readAsString(new File("C:\\Src\\file1.txt"));
+System.out.println(fileContent);
+
+*** ENETENDIENDO EL METODO canExecute()
+Regresara un true si el archivo es ejecutable 
+
+System.out.println(FileHandler.canExecute(new File("C:\\Src\\file1.txt")));
+FileHandler.makeExecutable(new File("C:\\Src\\file1.txt"));
+System.out.println(FileHandler.canExecute(new File("C:\\Src\\file1.txt")));
+
+
+**APRENDIENDO ACERCA DE LA CLASE TemporaryFileSystem 
+
+--Default temporary filesystem
+
+-Revisar pagina 140 - En pdf 155
+
+
+** REVISAR SOBRE WEBDRIVERREMOTE Y SELENIUM GRID 
